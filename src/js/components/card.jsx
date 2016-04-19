@@ -33,7 +33,6 @@ module.exports = React.createClass({
                     <div className="details">
                         <span>{this.props.data.Temperature}&deg;</span>
                         <span>{this.props.data.Humidity}%</span>
-                        <span>{this.props.data.Voltage}3.0V</span>
                     </div>
                 </div>
             </a>

@@ -4,13 +4,7 @@
 // Did not build as OOP at this time as I just wanted to get something fast out the door.
 
 // Best to change in the php.ini but wanted to add here for now
-ini_set('error_reporting', 'E_ALL & ~E_NOTICE');
-
-date_default_timezone_set('America/Los_Angeles');
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-
+require('./lib/setup.php');
 
 $path = substr($_SERVER['PATH_INFO'], 1);
 $sourceIp = $_SERVER['REMOTE_ADDR'];
@@ -43,13 +37,6 @@ switch($path) {
 		break;
 	default:
 		echo 'Hello, I am up and running. Thanks for checking.';
-}
-
-function connect() {
-	$db = new PDO('sqlite:iot.sqlite');
-	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$db->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES utf8');
-	return $db;
 }
 
 function install() {

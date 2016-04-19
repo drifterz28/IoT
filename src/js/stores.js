@@ -10,9 +10,16 @@ module.exports = Reflux.createStore({
     init: function() {
         this.listenTo(Actions.ClockIn, this.onCreate);
         this.listenTo(Actions.ClockOut, this.onEdit);
+        this.listenTo(Actions.Navigation, this.navigate);
         this.getLocationsData();
     },
     // called on save
+	navigate: function(location) {
+
+	},
+    getPath: function() {
+
+    },
     onCreate: function(info) {
     },
     // called on edit save

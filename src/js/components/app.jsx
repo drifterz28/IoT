@@ -4,13 +4,14 @@ var Actions = require('../actions');
 var Store = require('../stores');
 
 var Card = require('./card.jsx');
+var Signin = require('./signin.jsx');
 var MainContent = require('./main-content.jsx');
+var Navigation = require('./navigation.jsx');
 
 module.exports = React.createClass({
     getInitialState:function() {
         return {
-            locations: [],
-            location: []
+            path: 'home'
         };
     },
     componentDidMount: function() {
@@ -21,19 +22,14 @@ module.exports = React.createClass({
     },
     onChange: function() {
         this.setState({
-            locations: Store.getLocations()
+            path: Store.getPath()
         });
     },
     render: function() {
-        var self = this;
         return (
             <div className="container">
-                <div className="navWrapper">
-                    {this.state.locations.map(function(location) {
-                        return <Card key={location.Id} data={location}/>;
-                    })}
-                </div>
-                {this.state.location ? <MainContent /> : ''}
+                <Navigation {...this.state}/>
+                <Signin />
             </div>
         );
     }
