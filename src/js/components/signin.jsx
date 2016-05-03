@@ -6,22 +6,23 @@ var Store = require('../stores');
 module.exports = React.createClass({
 	signin: function(e) {
 		e.preventDefault();
+		var pin = e.target.querySelector('input').value;
+		Store.logIn(pin);
 	},
 	render: function() {
+		console.log(this.props);
 		return (
-			<div className="sign_in">
+			<div className="signIn">
 				<form onSubmit={this.signin}>
-					<span className="user">
-						<i className="fa fa-user fa-2x"></i>
-						<input type="text" value="Username"/>
-					</span>
-					<span className="lock">
-						<i className="fa fa-lock fa-2x"></i>
-						<input type="password" value="Password"/>
-					</span>
-					<div className="login-right">
-						<input type="submit" className="my-button btn-block" value="Sign in"/>
+					<h2>Enter pin</h2>
+					{this.props.error ? <div className="alert alert-danger" role="alert">{this.props.error}</div>: null}
+					<div className="input-group">
+						<span className="input-group-addon" id="basic-addon1">
+							<i className="fa fa-lock fa-2x"></i>
+						</span>
+						<input type="number" name="pin" className="form-control" placeholder="Password" />
 					</div>
+					<button className="btn btn-success btn-lg btn-block">Sign in</button>
 				</form>
 			</div>
 		);

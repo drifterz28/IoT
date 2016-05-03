@@ -39,12 +39,12 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            main: {
+            html: {
                 expand: true,
-                src: '<%= project.src %>/*.{html,php}',
+                src: '<%= project.src %>/*.{html}',
                 dest: '<%= project.app %>/',
                 flatten: true,
-            },
+            }
         },
         jshint: {
             all: '<%= project.srcJs %>/{,*/}*.js',
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
                 tasks: ['browserify:dist']
             },
             copy: {
-                files: '<%= project.src %>/*.{html,php}',
+                files: '<%= project.src %>/{,*/}*.{html}',
                 tasks: ['copy']
             },
             less: {
