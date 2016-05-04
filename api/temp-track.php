@@ -114,7 +114,7 @@ function getAllLocations() {
 	if($rowCount->fetchColumn() > 0) {
 		$times = array();
 		foreach ($db->query($devicesSql, PDO::FETCH_ASSOC) as $row) {
-			$times[] = $row;
+			$times[] = array_merge($row, getDeviceLastTemp($row['Id']));
 		}
 		echo json_encode($times);
 	} else {
@@ -122,9 +122,21 @@ function getAllLocations() {
 	}
 }
 
+function getDeviceLastTemp($ip) {
+	$db = connect();
+	$tempsSql = "SELECT * FROM Temps WHERE deviceId = '$ip' ORDER BY Id DESC LIMIT 1";
+	$rowCount = $db->query($tempsSql, PDO::FETCH_ASSOC);
+	if($rowCount->fetchColumn() > 0) {
+		$temps = array();
+		foreach ($db->query($tempsSql, PDO::FETCH_ASSOC) as $row) {
+			return $row;
+		}
+	}
+}
+
 function getLocationTemps($ip) {
 	$db = connect();
-	$tempsSql = "SELECT * FROM Temps WHERE IP = '$ip' ORDER BY Id DESC";
+	$tempsSql = "SELECT * FROM Temps WHERE deviceId = '$ip' ORDER BY Id DESC";
 	$rowCount = $db->query($tempsSql, PDO::FETCH_ASSOC);
 	if($rowCount->fetchColumn() > 0) {
 		$temps = array();

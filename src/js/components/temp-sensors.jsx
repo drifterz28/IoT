@@ -3,6 +3,8 @@ var React = require('react');
 var moment = require('moment');
 var Store = require('../stores');
 
+var Circle = require('./circleGraph.jsx');
+
 var TableContent = React.createClass({
 	render: function() {
 		var row = this.props.row;
@@ -20,36 +22,20 @@ var TableContent = React.createClass({
 
 module.exports = React.createClass({
 	getInitialState: function() {
-		return {
-			rows: [],
-			displayDate: null
-		};
+		return {};
 	},
 	componentDidMount: function() {
-		Store.doorsData();
-		setInterval(Store.doorsData, 15000);
+		Store.tempSensorsData();
 	},
 	delete: function(e) {
-		Store.deleteDoor(e);
+
 	},
 	render: function() {
 		return (
 			<div className="appWrapper">
-				<table className="table table-striped table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>Area</th>
-							<th>State</th>
-							<th>Time</th>
-							<th>Delete</th>
-						</tr>
-					</thead>
-					<tbody>
-					{this.props.doors.map(function(row, i) {
-						return (<TableContent key={i} row={row} delete={this.delete}/>);
-					}.bind(this))}
-					</tbody>
-				</table>
+				{this.props.temp.sensors.map(function(sensor, i) {
+					return (<Circle key={i} {...sensor}/>);
+				}.bind(this))}
 			</div>
 		);
 	}

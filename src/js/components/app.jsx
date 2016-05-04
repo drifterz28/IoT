@@ -9,7 +9,13 @@ var Container = require('./container.jsx');
 
 var defaultProps = {
 	isSignedIn: false,
-	error: null
+	error: null,
+	doorsSetting: {},
+	tempSettins: {},
+	doors: [],
+	temp: {
+		sensors: []
+	}
 };
 
 module.exports = React.createClass({
@@ -24,11 +30,12 @@ module.exports = React.createClass({
 		this.unsubscribe();
 	},
 	onChange: function(status) {
-		console.log(status);
+		//console.log(status);
 		var newState = objectAssign({}, this.state, status);
 		this.setState(newState);
 	},
 	render: function() {
+		console.log(this.state);
 		return (
 			<div className="container">
 				{!this.state.isSignedIn ?

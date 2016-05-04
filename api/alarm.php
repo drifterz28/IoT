@@ -14,7 +14,7 @@ $db = connect();
 
 $db->exec("CREATE TABLE IF NOT EXISTS door (id INTEGER PRIMARY KEY AUTOINCREMENT, area TEXT, state TEXT, timeStamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
-function showRows($db, $limit = 5) {
+function showRows($db, $limit = 10) {
 	$rows = array();
 	$sql = "SELECT * from door ORDER BY id DESC LIMIT $limit";
 	foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) {

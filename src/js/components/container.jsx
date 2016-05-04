@@ -4,12 +4,14 @@ var Actions = require('../actions');
 var Store = require('../stores');
 
 var Doors = require('./doors.jsx');
+var Temp = require('./temp-sensors.jsx');
 
 module.exports = React.createClass({
 	render: function() {
 		return (
 			<div className="appContainer">
-				<Doors/>
+				<Temp {...this.props}/>
+				<Doors {...this.props}/>
 			</div>
 		);
 	}
