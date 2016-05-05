@@ -33,8 +33,12 @@ module.exports = Reflux.createStore({
 		delete localStorage.IoT;
 		this.trigger();
 	},
-	doorsData: function() {
-		fetch('./api/alarm.php?action=get').then(function(response) {
+	doorsData: function(date, count) {
+		var url = './api/alarm.php?action=get&count=' + count;
+		if(date) {
+			url += '&date=' + date;
+		}
+		fetch(url).then(function(response) {
 			return response.json();
 		}).then(function(j) {
 			this.trigger({doors: j});
@@ -45,7 +49,7 @@ module.exports = Reflux.createStore({
 		fetch('./api/alarm.php?action=delete&id=' + dataId).then(function(response) {
 			return response.json();
 		}).then(function(j) {
-			this.trigger({doors: j});
+			this.trigger();
 		}.bind(this));
 	},
 	tempSensorsData: function() {

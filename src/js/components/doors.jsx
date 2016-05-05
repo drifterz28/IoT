@@ -21,20 +21,41 @@ var TableContent = React.createClass({
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			rows: [],
+			count: 10,
 			displayDate: null
 		};
 	},
 	componentDidMount: function() {
-		Store.doorsData();
-		setInterval(Store.doorsData, 15000);
+		Store.doorsData(this.state.displayDate, this.state.count);
+		setInterval(function() {
+			Store.doorsData(this.state.displayDate, this.state.count);
+		}.bind(this), 15000);
 	},
 	delete: function(e) {
 		Store.deleteDoor(e);
 	},
+	updateDoors: function(e) {
+		e.preventDefault();
+		var date = e.target[0].value;
+		this.setState({
+			displayDate: date
+		});
+		Store.doorsData(date, this.state.count);
+	},
 	render: function() {
 		return (
 			<div className="appWrapper">
+				<div className="panel panel-default">
+					<div className="panel-body">
+						<form className="form-inline" onSubmit={this.updateDoors}>
+							<div className="form-group">
+								<label for="exampleInputName2">Date </label>
+								<input type="date" name="displayDate" className="form-control" id="exampleInputName2"/>
+							</div>
+							<button type="submit" className="btn btn-default">Update</button>
+						</form>
+					</div>
+				</div>
 				<table className="table table-striped table-bordered table-condensed">
 					<thead>
 						<tr>

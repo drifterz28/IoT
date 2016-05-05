@@ -7,6 +7,7 @@ $area = $_GET['area'];
 $action = $_GET['action'];
 $id = $_GET['id'];
 $date = $_GET['date'];
+$count = $_GET['count'];
 $dateRange = $_GET['dateRange'];
 
 // Create (connect to) SQLite database in file
@@ -23,8 +24,23 @@ function showRows($db, $limit = 10) {
 	return json_encode($rows);
 }
 
+function showRowsByDate($db, $date) {
+	$startDate = $date . ' 00:00:00';
+	$endDate = $date . ' 24:00:00';
+	$rows = array();
+	$sql = "SELECT * from door WHERE timeStamp BETWEEN '$startDate' AND '$endDate' ORDER BY id DESC";
+	foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) {
+		$rows[] = $row;
+	}
+	return json_encode($rows);
+}
+
 if($action === 'get') {
-	echo showRows($db);
+	if(!empty($date)) {
+		echo showRowsByDate($db, $date);
+	} else {
+		echo showRows($db, $count);
+	}
 }
 
 if($action === 'delete' && !empty($id)) {
