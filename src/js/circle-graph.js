@@ -1,13 +1,13 @@
 'use strict';
 
-var donutGraph = {
+module.exports = {
 	elm: undefined,
 	size: undefined,
 	strokeWidth: undefined,
 	strokeLinecap: undefined,
 	circleColors: undefined,
 	bgStrokeColor: undefined,
-	maxSteps: undefined,
+	maxValue: undefined,
 	radius: undefined,
 	strokeDash: undefined,
 	graph: undefined,
@@ -18,7 +18,7 @@ var donutGraph = {
 		this.strokeLinecap = options.strokeLinecap;
 		this.circleColors = options.circleColors;
 		this.bgStrokeColor = options.bgStrokeColor;
-		this.maxSteps = options.maxSteps;
+		this.maxValue = options.maxValue;
 		this.svgSetup();
 	},
 	svgSetup() {
@@ -30,60 +30,35 @@ var donutGraph = {
 		this.graph.setAttribute('height', this.size);
 		this.graph.setAttribute('viewBox', '0 0 ' + this.size + ' ' + this.size);
 		this.graph.appendChild(this.buildCircle(this.bgStrokeColor, 0, 'bgCircle'));
-	},
-	draw(steps) {
-		var circleCount = Math.ceil(steps / this.maxSteps);
-		for (var i = 0; i < circleCount; i++) {
-			var strokeOffset = (i === circleCount - 1) ? this.strokeDashOffset(steps) : 0;
-			this.graph.appendChild(this.buildCircle(this.circleColors[i], strokeOffset, 'circle'));
-		}
 		this.elm.appendChild(this.graph);
-		setTimeout(this.animateGraph, 500);
 	},
-	update(steps) {
-		var circleCount = Math.ceil(steps / this.maxSteps);
-		var donuts = document.querySelectorAll('.circle');
-		var donutLen = donuts.length - 1;
-		var delay = 0;
-		console.log('circleCount', circleCount);
-		console.log('donuts.length',  donuts.length);
-		if(donuts.length < circleCount) {
-			console.log('more circleCount');
-			donuts[donutLen].setAttribute('data-offset', 0);
-			for (var i = donuts.length; i < circleCount; i++) {
-				console.log('index', i);
-				var strokeOffset = (i === circleCount - 1) ? this.strokeDashOffset(steps) : 0;
-				this.graph.appendChild(this.buildCircle(this.circleColors[i], strokeOffset, 'circle'));
-				this.elm.appendChild(this.graph);
-			}
-			delay = 300;
-		}
-		if(circleCount === donuts.length) {
-			donuts[donutLen].setAttribute('data-offset', this.strokeDashOffset(steps));
-			console.log('equal circleCount');
-		}
-		if(circleCount < donuts.length) {
-			console.log('less circleCount');
-			this.removeCircle(donuts[donutLen]);
-			donuts[donutLen - 1].setAttribute('data-offset', this.strokeDashOffset(steps));
-		}
-		setTimeout(this.animateGraph, delay);
+	draw(value, index) {
+		var strokeOffset = this.strokeDashOffset(value);
+		this.graph.appendChild(this.buildCircle(this.circleColors[index], strokeOffset, 'circle'));
+	},
+	update(value, index) {
+		var donut = this.elm.querySelectorAll('.circle')[index];
+		var delay = 300;
+		var strokeOffset = this.strokeDashOffset(value);
+		donut.setAttribute('data-offset', strokeOffset);
 	},
 	removeCircle(node) {
 		if (node.parentNode) {
 			node.parentNode.removeChild(node);
 		}
 	},
-	strokeDashOffset(steps) {
-		var remainder = steps % this.maxSteps; // remainder of steps after the 10000 mark
-		return this.strokeDash - Math.floor(remainder / this.maxSteps * this.strokeDash);
+	strokeDashOffset(value) {
+		var remainder = value % this.maxValue; // remainder of value after the 10000 mark
+		return this.strokeDash - Math.floor(remainder / this.maxValue * this.strokeDash);
 	},
 	animateGraph() {
-		var donuts = document.querySelectorAll('.circle');
-		for (var i = 0; i < donuts.length; i++) {
-			var newOffset = donuts[i].getAttribute('data-offset');
-			donuts[i].style.strokeDashoffset = newOffset;
-		}
+		var donuts = this.elm.querySelectorAll('.circle');
+		setTimeout(function() {
+			for (var i = 0; i < donuts.length; i++) {
+				var newOffset = donuts[i].getAttribute('data-offset');
+				donuts[i].style.strokeDashoffset = newOffset;
+			}
+		}, 300);
 	},
 	calculateCircumference(radius) {
 		return 2 * Math.PI * radius;
@@ -104,21 +79,21 @@ var donutGraph = {
 		return circle;
 	}
 };
-
-function donutGraph(steps) {
+/*
+function donutGraph(value) {
 	// settings
-	//var steps = 15000;
+	//var value = 15000;
 	var size = 150;
 	var strokeWidth = 15;
 	var strokeLinecap = 'round';
 	var circleColors = ['#9ecff2', '#0077c8'];
 	var bgStrokeColor = 'rgba(153,153,153,.2)';
-	var maxSteps = 10000;
+	var maxValue = 10000;
 
 	// constants
 	var radius = size / 2 - strokeWidth;
 	var strokeDash = Math.ceil(calculateCircumference(radius));
-	var circles = Math.ceil(steps / maxSteps);
+	var circles = Math.ceil(value / maxValue);
 	var svgns = 'http://www.w3.org/2000/svg';
 	// create SVG wrapper
 	var donutGraph = document.createElementNS(svgns, 'svg:svg');
@@ -129,13 +104,13 @@ function donutGraph(steps) {
 	donutGraph.appendChild(buildCircle(bgStrokeColor, 0, 'bgCircle'));
 	// build each loop of the donut
 	for (var i = 0; i < circles; i++) {
-		var strokeOffset = (i === circles - 1) ? strokeDashOffset(steps, maxSteps, strokeDash) : 0;
+		var strokeOffset = (i === circles - 1) ? strokeDashOffset(value, maxValue, strokeDash) : 0;
 		donutGraph.appendChild(buildCircle(circleColors[i], strokeOffset, 'circle'));
 	}
 
-	function strokeDashOffset(steps, maxSteps, strokeDash) {
-		var remainder = steps % maxSteps; // remainder of steps after the 10000 mark
-		return strokeDash - Math.floor(remainder / maxSteps * strokeDash);
+	function strokeDashOffset(value, maxValue, strokeDash) {
+		var remainder = value % maxValue; // remainder of value after the 10000 mark
+		return strokeDash - Math.floor(remainder / maxValue * strokeDash);
 	}
 
 	function animateGraph() {
@@ -145,8 +120,6 @@ function donutGraph(steps) {
 			donuts[i].style.strokeDashoffset = newOffset;
 		}
 	}
-
-
 
 	function buildCircle(strokeColor, strokeOffset, className) {
 		var circle = document.createElementNS(svgns, 'circle');
@@ -171,6 +144,7 @@ function donutGraph(steps) {
 	donutGraphEl.appendChild(donutGraph);
 	setTimeout(animateGraph, 500);
 }
+
 // init
 var donutGraphEl = document.querySelector('.donut');
 var options = {
@@ -179,7 +153,7 @@ var options = {
 	strokeLinecap: 'round',
 	circleColors: ['rgb(118,178,218)', 'rgb(0, 119, 200)'],
 	bgStrokeColor: '#CCCFD0',
-	maxSteps: 10000
+	maxValue: 10000
 };
 
 donutGraph.init(donutGraphEl, options);
@@ -190,3 +164,4 @@ document.querySelector('.steps').addEventListener('submit', function(e) {
 	var steps = +e.target.querySelector('input').value;
 	donutGraph.update(steps);
 });
+*/

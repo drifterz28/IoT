@@ -39,11 +39,17 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            html: {
+            main: {
                 expand: true,
-                src: '<%= project.src %>/*.{html}',
+                src: '<%= project.src %>/*.html',
                 dest: '<%= project.app %>/',
                 flatten: true,
+            },
+            php: {
+                expand: true,
+                src: 'api/**/*.{php,sqlite}',
+                dest: '<%= project.app %>/',
+                flatten: false,
             }
         },
         jshint: {
@@ -85,7 +91,7 @@ module.exports = function(grunt) {
                 tasks: ['browserify:dist']
             },
             copy: {
-                files: '<%= project.src %>/{,*/}*.{html}',
+                files: ['<%= project.src %>/**/*.html', 'api/**/*.{php,sqlite}'],
                 tasks: ['copy']
             },
             less: {
@@ -125,5 +131,5 @@ module.exports = function(grunt) {
     grunt.registerTask('css', ['less']);
     //grunt.registerTask('css', ['sass']);
     grunt.registerTask('img', ['imagemin']);
-    grunt.registerTask('build', ['copy:main', 'js', 'css', 'img']);
+    grunt.registerTask('build', ['copy', 'js', 'css', 'img']);
 };
