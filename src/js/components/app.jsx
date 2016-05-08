@@ -13,9 +13,8 @@ var defaultProps = {
 	doorsSetting: {},
 	tempSettins: {},
 	doors: [],
-	temp: {
-		sensors: []
-	}
+	tempSensors: [],
+	tempSensorDetails: null
 };
 
 module.exports = React.createClass({
@@ -30,12 +29,11 @@ module.exports = React.createClass({
 		this.unsubscribe();
 	},
 	onChange: function(status) {
-		//console.log(status);
-		var newState = objectAssign({}, this.state, status);
+		var newState = objectAssign(defaultProps, this.state, status);
+		//console.log(newState);
 		this.setState(newState);
 	},
 	render: function() {
-		console.log(this.state);
 		return (
 			<div className="container">
 				{!this.state.isSignedIn ?

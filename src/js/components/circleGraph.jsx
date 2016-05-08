@@ -2,6 +2,7 @@
 var React = require('react');
 var moment = require('moment');
 
+var Store = require('../stores');
 var circleGraph = require('../circle-graph');
 
 module.exports = React.createClass({
@@ -22,7 +23,8 @@ module.exports = React.createClass({
 			strokeLinecap: 'round',
 			circleColors: ['#3498db', '#2ecc71'],
 			bgStrokeColor: '#CCCFD0',
-			maxValue: 120
+			maxValue: 120,
+			delay: 100
 		};
 		var tempIndex = (temp > hum) ? 0 : 1;
 		var humIndex = (temp < hum) ? 0 : 1;
@@ -56,9 +58,13 @@ module.exports = React.createClass({
 	saveLocation: function(e) {
 		e.preventDefault();
 		var newName = e.target[0].value;
+		Store.saveLocationName(newName, this.props.deviceId);
 		this.setState({
 			toUpdateName: false
 		});
+	},
+	viewMoreDetails: function() {
+		this.props.viewMoreDetails(this.props.deviceId);
 	},
 	render: function() {
 		var timeStamp = moment(this.props.Timestamp).format('MMM D, YYYY, h:mm:ss a');
@@ -84,6 +90,7 @@ module.exports = React.createClass({
 							<span>T: {this.props.Temperature}&ordm;</span>
 						</div>
 					}
+					<button onClick={this.viewMoreDetails} className="btn btn-info btn-xs">View more</button>
 				</div>
 				<div className="timeStamp">
 					Time: {timeStamp}

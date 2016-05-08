@@ -1,0 +1,38 @@
+.dayGraph {
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.graphs {
+	height: 100px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	margin-bottom: 10px;
+	padding-top: 20px;
+	position: relative;
+	overflow: hidden;
+	border-bottom: 1px solid;
+}
+
+.graph {
+	background: rgb(70,153,210);
+	border: 1px solid;
+	width: 26px;
+	height: 100%;
+	transform: translateY(99%);
+	transition: all .4s ease;
+	&:before {
+		content: attr('date-info');
+		display: block;
+	}
+}
+
+.graph-delay(@n, @i: 1) when (@i =< @n) {
+	.graph:nth-child(@{i}) {
+		@delay:  @i - 1;
+		transition-delay: ~".@{delay}s";
+	}
+	.graph-delay(@n, (@i + 1));
+}
+.graph-delay(70);

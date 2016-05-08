@@ -4,38 +4,40 @@ var moment = require('moment');
 var Store = require('../stores');
 
 var Circle = require('./circleGraph.jsx');
-
-var TableContent = React.createClass({
-	render: function() {
-		var row = this.props.row;
-		var timeStamp = moment(row.timeStamp).format('MMM D, YYYY, h:mm:ss a');
-		return (
-			<tr data-id={row.id}>
-				<td>{row.area}</td>
-				<td>{row.state}</td>
-				<td>{timeStamp}</td>
-				<td><button className="btn btn-danger btn-xs" onClick={this.props.delete} data-id={row.id}>X</button></td>
-			</tr>
-		);
-	}
-});
+var ShowDeviceTemps = require('./temp-chart.jsx');
 
 module.exports = React.createClass({
 	getInitialState: function() {
-		return {};
+		return {
+			deviceId: null,
+			displayDate: moment().format('YYYY-MM-DD')
+		};
+	},
+	viewMoreDetails: function(deviceId) {
+		Store.getDeviceDetails(deviceId, this.state.displayDate);
+		this.setState({
+			deviceId: deviceId
+		});
 	},
 	componentDidMount: function() {
 		Store.tempSensorsData();
+		setInterval(Store.tempSensorsData, 1000 * 60 * 10);
 	},
-	delete: function(e) {
-
+	updateDate: function(date) {
+		Store.getDeviceDetails(this.state.deviceId, date);
+		this.setState({
+			displayDate: date
+		});
 	},
 	render: function() {
 		return (
-			<div className="appWrapper">
-				{this.props.temp.sensors.map(function(sensor, i) {
-					return (<Circle key={i} {...sensor}/>);
-				}.bind(this))}
+			<div>
+				<div className="appWrapper flex">
+					{this.props.tempSensors.map(function(sensor, i) {
+						return (<Circle key={i} viewMoreDetails={this.viewMoreDetails} {...sensor}/>);
+					}.bind(this))}
+				</div>
+				{this.props.tempSensorDetails ? <ShowDeviceTemps updateDate={this.updateDate} {...this.props.tempSensorDetails}/> : null}
 			</div>
 		);
 	}

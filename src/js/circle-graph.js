@@ -11,6 +11,7 @@ module.exports = {
 	radius: undefined,
 	strokeDash: undefined,
 	graph: undefined,
+	delay: undefined,
 	init(elm, options) {
 		this.elm = elm;
 		this.size = options.size;
@@ -19,6 +20,7 @@ module.exports = {
 		this.circleColors = options.circleColors;
 		this.bgStrokeColor = options.bgStrokeColor;
 		this.maxValue = options.maxValue;
+		this.delay = options.delay;
 		this.svgSetup();
 	},
 	svgSetup() {
@@ -38,7 +40,6 @@ module.exports = {
 	},
 	update(value, index) {
 		var donut = this.elm.querySelectorAll('.circle')[index];
-		var delay = 300;
 		var strokeOffset = this.strokeDashOffset(value);
 		donut.setAttribute('data-offset', strokeOffset);
 	},
@@ -58,7 +59,7 @@ module.exports = {
 				var newOffset = donuts[i].getAttribute('data-offset');
 				donuts[i].style.strokeDashoffset = newOffset;
 			}
-		}, 300);
+		}, this.delay);
 	},
 	calculateCircumference(radius) {
 		return 2 * Math.PI * radius;

@@ -8,8 +8,10 @@ require('./lib/setup.php');
 
 $path = substr($_SERVER['PATH_INFO'], 1);
 $sourceIp = $_SERVER['REMOTE_ADDR'];
+$deviceId = $_GET['deviceId'];
 $ip = isset($_GET['ip']) ? $_GET['ip'] : $sourceIp;
 $location = $_GET['location'];
+$date = $_GET['date'];
 $temp = $_GET['t'];
 $humidity = $_GET['h'];
 
@@ -21,7 +23,7 @@ switch($path) {
 		getAllLocations();
 		break;
 	case 'list/temps':
-		getLocationTemps($ip);
+		getLocationTemps($deviceId, $date);
 		break;
 	case 'list/all-temps':
 		getAllTemps();
@@ -31,6 +33,9 @@ switch($path) {
 		break;
 	case 'install':
 		install();
+		break;
+	case 'rename':
+		renameDevice($location, $deviceId);
 		break;
 	case 'check':
 		device($ip);
@@ -51,6 +56,17 @@ function checkDevice($ip) {
 	$deviceCheckSql = "SELECT Id FROM 'Devices' WHERE IP = '$ip'";
 	$rowCount = $db->query($deviceCheckSql, PDO::FETCH_ASSOC);
 	return $rowCount->fetchColumn() > 0;
+}
+
+function renameDevice($newName, $deviceId) {
+	$db = connect();
+	$deviceSql = "UPDATE Devices SET Location = :newName WHERE Id = :deviceId";
+	$insert = $db->prepare($deviceSql);
+	if($insert->execute(array($newName, $deviceId))) {
+		echo '{"status": "name Changed"}';
+	} else {
+		echo '{"error": "failed to update name"}';
+	}
 }
 
 // Add device, send in 2 params location and MAC/IPv4 address
@@ -134,16 +150,30 @@ function getDeviceLastTemp($ip) {
 	}
 }
 
-function getLocationTemps($ip) {
+function getDeviceInfo($deviceId) {
 	$db = connect();
-	$tempsSql = "SELECT * FROM Temps WHERE deviceId = '$ip' ORDER BY Id DESC";
+	$devicesSql = "SELECT * FROM 'Devices' WHERE Id = '$deviceId'";
+	$rowCount = $db->query($devicesSql, PDO::FETCH_ASSOC);
+	if($rowCount->fetchColumn() > 0) {
+		foreach ($db->query($devicesSql, PDO::FETCH_ASSOC) as $row) {
+			return $row;
+		}
+	}
+}
+
+function getLocationTemps($deviceId, $date) {
+	$db = connect();
+	$deviceInfo = getDeviceInfo($deviceId);
+	$startDate = $date . ' 00:00:00';
+	$endDate = $date . ' 24:00:00';
+	$tempsSql = "SELECT * FROM Temps WHERE deviceId = '$deviceId' AND timeStamp BETWEEN '$startDate' AND '$endDate' ORDER BY id DESC";
 	$rowCount = $db->query($tempsSql, PDO::FETCH_ASSOC);
 	if($rowCount->fetchColumn() > 0) {
 		$temps = array();
 		foreach ($db->query($tempsSql, PDO::FETCH_ASSOC) as $row) {
 			$temps[] = $row;
 		}
-		echo json_encode($temps);
+		echo json_encode(array('device' => $deviceInfo, 'temps' => $temps));
 	} else {
 		echo '[]';
 	}

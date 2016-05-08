@@ -1,6 +1,7 @@
 .circleGraph {
 	position: relative;
 	text-align: center;
+	flex-grow: 1;
 	h4 {}
 	input {
 		text-align: center;
@@ -13,7 +14,7 @@
 	position: absolute;
 	right: 0;
 	text-align: center;
-	top: 75px;
+	top: 80px;
 	.values {
 		span:first-child {
 			color: #3498db;
@@ -21,5 +22,39 @@
 		span:last-child {
 			color: #2ecc71;
 		}
+	}
+}
+
+.dayGraph {
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.graphs {
+	height: 100px;
+	display: flex;
+	align-items: flex-end;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	margin-bottom: 10px;
+	padding-top: 20px;
+	position: relative;
+	overflow: hidden;
+	border-bottom: 1px solid;
+}
+
+.graph {
+	background: rgb(70,153,210);
+	border: 1px solid;
+	width: 16px;
+	flex-grow: 1;
+	flex-shrink: 1;
+	height: 100%;
+	transform: translateY(99%);
+	transition: all .4s ease;
+	.tempsInfo {
+		transform: rotate(90deg);
+		color: #fff;
+		font-size: 1.5vh;
 	}
 }

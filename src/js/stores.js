@@ -52,14 +52,28 @@ module.exports = Reflux.createStore({
 			this.trigger();
 		}.bind(this));
 	},
+	getDeviceDetails: function(deviceId, date) {
+		fetch('./api/temp-track.php/list/temps?deviceId=' + deviceId + '&date=' + date).then(function(response) {
+			return response.json();
+		}).then(function(j) {
+			this.trigger({
+				tempSensorDetails: j
+			});
+		}.bind(this));
+	},
+	saveLocationName: function(newName, deviceId) {
+		fetch('./api/temp-track.php/rename?deviceId=' + deviceId + '&location=' + newName).then(function(response) {
+			return response.json();
+		}).then(function(j) {
+			this.tempSensorsData();
+		}.bind(this));
+	},
 	tempSensorsData: function() {
 		fetch('./api/temp-track.php/list/locations').then(function(response) {
 			return response.json();
 		}).then(function(j) {
 			this.trigger({
-				temp: {
-					sensors: j
-				}
+				tempSensors: j
 			}
 		);
 		}.bind(this));

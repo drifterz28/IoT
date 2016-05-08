@@ -16,3 +16,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+//<Doors {...this.props}/>
