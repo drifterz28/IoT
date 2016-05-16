@@ -26,11 +26,17 @@ module.exports = React.createClass({
 			maxValue: 120,
 			delay: 100
 		};
-		var tempIndex = (temp > hum) ? 0 : 1;
-		var humIndex = (temp < hum) ? 0 : 1;
+		var tempIndex = (+temp > +hum) ? 0 : 1;
+		var humIndex = (+temp < +hum) ? 0 : 1;
 		circleGraph.init(donutGraphEl, options);
-		circleGraph.draw(temp, tempIndex);
-		circleGraph.draw(hum, humIndex);
+		if(+temp > +hum) {
+			circleGraph.draw(temp, 0);
+			circleGraph.draw(hum, 1);
+		} else {
+			circleGraph.draw(hum, 0);
+			circleGraph.draw(temp, 1);
+		}
+
 		circleGraph.animateGraph();
 		this.setState({
 			tempIndex: tempIndex,
@@ -40,10 +46,15 @@ module.exports = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 		var temp = nextProps.Temperature;
 		var hum = nextProps.Humidity;
-		var tempIndex = (temp > hum) ? 0 : 1;
-		var humIndex = (temp < hum) ? 0 : 1;
-		circleGraph.update(temp, tempIndex);
-		circleGraph.update(hum, humIndex);
+		var tempIndex = (+temp > +hum) ? 0 : 1;
+		var humIndex = (+temp < +hum) ? 0 : 1;
+		if(+temp > +hum) {
+			circleGraph.draw(temp, 0);
+			circleGraph.draw(hum, 1);
+		} else {
+			circleGraph.draw(hum, 0);
+			circleGraph.draw(temp, 1);
+		}
 		circleGraph.animateGraph();
 		this.setState({
 			tempIndex: tempIndex,

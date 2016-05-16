@@ -22,7 +22,7 @@ module.exports = React.createClass({
 	getInitialState: function() {
 		return {
 			count: 10,
-			displayDate: null
+			displayDate: moment().format('YYYY-MM-DD')
 		};
 	},
 	componentDidMount: function() {
@@ -43,6 +43,7 @@ module.exports = React.createClass({
 		Store.doorsData(date, this.state.count);
 	},
 	render: function() {
+		var today =  moment().format('YYYY-MM-DD');
 		return (
 			<div className="appWrapper">
 				<div className="panel panel-default">
@@ -50,7 +51,7 @@ module.exports = React.createClass({
 						<form className="form-inline" onSubmit={this.updateDoors}>
 							<div className="form-group">
 								<label for="exampleInputName2">Date </label>
-								<input type="date" name="displayDate" className="form-control" id="exampleInputName2"/>
+								<input type="date" name="displayDate" max={today} className="form-control" id="exampleInputName2"/>
 							</div>
 							<button type="submit" className="btn btn-default">Update</button>
 						</form>

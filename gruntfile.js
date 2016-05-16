@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                     browserifyOptions: {
                         debug: true
                     },
-                    transform: ['reactify'],
+                    transform: [['babelify', { presets: ["react", "es2015"] }]],
                     plugin: [ [ 'minifyify', {
                         minify: false,
                         map: 'main.js.map',
