@@ -1,6 +1,18 @@
 'use strict';
 
-module.exports = {
+function CircleGraph(elm, options) {
+	this.elm = elm;
+	this.size = options.size;
+	this.strokeWidth = options.strokeWidth;
+	this.strokeLinecap = options.strokeLinecap;
+	this.circleColors = options.circleColors;
+	this.bgStrokeColor = options.bgStrokeColor;
+	this.maxValue = options.maxValue;
+	this.delay = options.delay;
+	this.svgSetup();
+}
+
+CircleGraph.prototype = {
 	elm: undefined,
 	size: undefined,
 	strokeWidth: undefined,
@@ -12,17 +24,6 @@ module.exports = {
 	strokeDash: undefined,
 	graph: undefined,
 	delay: undefined,
-	init(elm, options) {
-		this.elm = elm;
-		this.size = options.size;
-		this.strokeWidth = options.strokeWidth;
-		this.strokeLinecap = options.strokeLinecap;
-		this.circleColors = options.circleColors;
-		this.bgStrokeColor = options.bgStrokeColor;
-		this.maxValue = options.maxValue;
-		this.delay = options.delay;
-		this.svgSetup();
-	},
 	svgSetup() {
 		this.radius = this.size / 2 - this.strokeWidth;
 		this.strokeDash = Math.ceil(this.calculateCircumference(this.radius));
@@ -80,6 +81,8 @@ module.exports = {
 		return circle;
 	}
 };
+
+module.exports = CircleGraph;
 /*
 function donutGraph(value) {
 	// settings

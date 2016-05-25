@@ -36,7 +36,7 @@ module.exports = React.createClass({
 	},
 	updateDoors: function(e) {
 		e.preventDefault();
-		var date = e.target[0].value;
+		var date = e.target.value;
 		this.setState({
 			displayDate: date
 		});
@@ -48,12 +48,16 @@ module.exports = React.createClass({
 			<div className="appWrapper">
 				<div className="panel panel-default">
 					<div className="panel-body">
-						<form className="form-inline" onSubmit={this.updateDoors}>
+						Alarm Arm, Disarm
+					</div>
+				</div>
+				<div className="panel panel-default">
+					<div className="panel-body">
+						<form className="form-inline">
 							<div className="form-group">
 								<label for="exampleInputName2">Date </label>
-								<input type="date" name="displayDate" max={today} className="form-control" id="exampleInputName2"/>
+								<input onChange={this.updateDoors} type="date" name="displayDate" defaultValue={today} max={today} className="form-control" id="exampleInputName2"/>
 							</div>
-							<button type="submit" className="btn btn-default">Update</button>
 						</form>
 					</div>
 				</div>
