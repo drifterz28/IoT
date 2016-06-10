@@ -31,19 +31,19 @@ module.exports = React.createClass({
 		var tempIndex = (+temp > +hum) ? 0 : 1;
 		var humIndex = (+temp < +hum) ? 0 : 1;
 		this.circleGraph = new CircleGraph(donutGraphEl, options);
-		// if(+temp > +hum) {
-		// 	this.circleGraph.draw(temp, 0);
-		// 	this.circleGraph.draw(hum, 1);
-		// } else {
-		// 	this.circleGraph.draw(hum, 0);
-		// 	this.circleGraph.draw(temp, 1);
-		// }
-		//
-		// this.circleGraph.animateGraph();
-		// this.setState({
-		// 	tempIndex: tempIndex,
-		// 	humIndex: humIndex
-		// });
+		if(+temp > +hum) {
+			this.circleGraph.draw(temp, 0);
+			this.circleGraph.draw(hum, 1);
+		} else {
+			this.circleGraph.draw(hum, 0);
+			this.circleGraph.draw(temp, 1);
+		}
+
+		this.circleGraph.animateGraph();
+		this.setState({
+			tempIndex: tempIndex,
+			humIndex: humIndex
+		});
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var temp = nextProps.Temperature;
@@ -51,11 +51,11 @@ module.exports = React.createClass({
 		var tempIndex = (+temp > +hum) ? 0 : 1;
 		var humIndex = (+temp < +hum) ? 0 : 1;
 		if(+temp > +hum) {
-			this.circleGraph.draw(temp, 0);
-			this.circleGraph.draw(hum, 1);
+			this.circleGraph.update(temp, 0);
+			this.circleGraph.update(hum, 1);
 		} else {
-			this.circleGraph.draw(hum, 0);
-			this.circleGraph.draw(temp, 1);
+			this.circleGraph.update(hum, 0);
+			this.circleGraph.update(temp, 1);
 		}
 		this.circleGraph.animateGraph();
 		this.setState({
