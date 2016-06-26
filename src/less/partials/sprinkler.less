@@ -1,0 +1,35 @@
+.daySelector {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  float: right;
+  div {
+    background: #888;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    line-height: 2em;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    width: 30px;
+    border: 1px solid black;
+  }
+  input {
+    position: absolute;
+	  opacity: 0;
+	  z-index: 3;
+  }
+  input:checked ~ div {
+    background: #86d993;
+  }
+}
+.zoneSettings {
+  > div {
+    flex-grow: 1;
+    width: 25%
+  }
+}
+.zoneLabel {
+}
+.zoneTimeSettings {}
