@@ -5,18 +5,16 @@ var DayPicker = React.createClass({
 	render: function() {
 		var daysAbbr = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 		return (
-			<ul className="daySelector">
+			<div className="daySelector btn-group">
 				{daysAbbr.map(function(day, i) {
 					return (
-						<li key={i}>
-							<label>
-								<input type="checkbox"/>
-								<div>{day}</div>
-							</label>
-						</li>
+						<label className="btn btn-default" key={i}>
+							<input type="checkbox"/>
+							<div>{day}</div>
+						</label>
 					);
 				}.bind(this))}
-			</ul>
+			</div>
 		);
 	}
 });
@@ -39,13 +37,13 @@ module.exports = React.createClass({
 							  <span className="input-group-addon">Min</span>
 							</div>
 						</div>
-						<DayPicker/>
+						<DayPicker />
 					</div>
 				</div>
 				<div className="panel panel-default">
 					<div className="panel-body">
 						Back Yard:
-						<DayPicker/>
+						<DayPicker />
 					</div>
 				</div>
 			</div>
