@@ -9,8 +9,8 @@ ESP8266WiFiMulti WiFiMulti;
 #define DHTPIN 2     // sensor pin connected to
 #define DHTTYPE DHT22   // DHT 22 sensor
 
-const char* ssid = "Empire-2.4";
-const char* pass = "5038038883";
+const char* ssid = ".......";
+const char* pass = ".......";
 String url = "http://chriswhitney.com/IoT/api/temp-track.php/track";
 int main_delay = 15; // delay in min for the loop
 bool isFahrenheit = true;

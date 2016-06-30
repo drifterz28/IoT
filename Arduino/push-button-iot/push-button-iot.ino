@@ -5,8 +5,8 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-const char* ssid = "Empire-2.4";
-const char* pass = "5038038883";
+const char* ssid = ".......";
+const char* pass = ".......";
 String url = "http://chriswhitney.com/IoT/api/alarm.php";
 
 int pushButton = 0;
@@ -58,7 +58,7 @@ void loop() {
     Serial.println("front Released");
     sendInfo("Front", "Closed");
   }
-  
+
   if (myBtnTwo.wasPressed()) {
     Serial.println("Garage press");
     sendInfo("Garage", "Open");
@@ -69,4 +69,3 @@ void loop() {
   }
   delay(100);
 }
-
