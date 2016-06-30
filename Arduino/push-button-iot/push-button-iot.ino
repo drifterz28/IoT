@@ -7,7 +7,8 @@ ESP8266WiFiMulti WiFiMulti;
 
 const char* ssid = ".......";
 const char* pass = ".......";
-String url = "http://chriswhitney.com/IoT/api/alarm.php";
+const char* apiKey = ".......";
+String url = "http://chriswhitney.com/IoT/api/alarm.php?key=";
 
 int pushButton = 0;
 int pushButtonTwo = 2;
