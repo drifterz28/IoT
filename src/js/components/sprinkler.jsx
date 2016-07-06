@@ -28,13 +28,13 @@ module.exports = React.createClass({
 						<div className="zoneLabel">Front Yard:</div>
 						<div className="zoneTimeSettings">
 							<div className="input-group">
-							  <span className="input-group-addon">Run Time</span>
-							  <input type="text" className="form-control"/>
+								<span className="input-group-addon">Run Time</span>
+								<input type="text" className="form-control"/>
 							</div>
 							<div className="input-group">
-							  <span className="input-group-addon">Duration</span>
-							  <input type="text" className="form-control"/>
-							  <span className="input-group-addon">Min</span>
+								<span className="input-group-addon">Duration</span>
+								<input type="text" className="form-control"/>
+								<span className="input-group-addon">Min</span>
 							</div>
 						</div>
 						<DayPicker />
