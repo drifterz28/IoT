@@ -20,7 +20,12 @@
     "start:dev": "NODE_ENV=dev node server.js"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
     "moment": "*",
+    "mongoose": "^4.6.1",
+    "morgan": "^1.7.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-redux": "^4.4.5",
